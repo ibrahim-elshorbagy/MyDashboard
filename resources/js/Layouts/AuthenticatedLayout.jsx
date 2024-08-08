@@ -5,7 +5,6 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 import Sidebar from "./sidebar/Sidebar";
-
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 
 export default function Authenticated({ user, header, children }) {
@@ -13,17 +12,17 @@ export default function Authenticated({ user, header, children }) {
 
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
-                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="flex justify-between h-16">
+        <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+            <nav className="fixed top-0 left-0 z-10 w-full bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+                <div className="mx-auto max-w-7xl">
+                    <div className="flex justify-between h-16 px-6">
                         <div className="flex">
                             <div className="flex items-center shrink-0">
                                 <Link href="dashboard">
                                     <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
                                 </Link>
                             </div>
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                                 <NavLink
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
@@ -33,11 +32,11 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
+                        <div className="hidden sm:flex sm:items-center sm:ml-6">
                             <ThemeToggleButton />
 
-                            <div className="relative ms-3">
-                                <Dropdown>
+                            <div className="relative ml-3">
+                                <Dropdown >
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
@@ -47,14 +46,14 @@ export default function Authenticated({ user, header, children }) {
                                                 {user.name}
 
                                                 <svg
-                                                    className="ms-2 -me-0.5 h-4 w-4"
+                                                    className="ml-2 -mr-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
                                                 >
                                                     <path
                                                         fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 01-1.414 0l-4-4a1 1 010-1.414z"
                                                         clipRule="evenodd"
                                                     />
                                                 </svg>
@@ -80,11 +79,11 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                         </div>
 
-                        <div className="flex items-center -me-2 sm:hidden">
+                        <div className="flex items-center -mr-2 sm:hidden">
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
-                                        (previousState) => !previousState
+                                        !showingNavigationDropdown
                                     )
                                 }
                                 className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
@@ -164,17 +163,18 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            {header && (
-                <header className="bg-white shadow dark:bg-gray-800">
-                    <div className="px-4 py-6 mx-auto max-w-7xl sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )}
-
-            <div className="flex">
+            <div className="flex pt-16">
                 <Sidebar user={user} />
-                <main className="flex-1">{children}</main>
+                <div className="flex-1">
+                    {header && (
+                        <header className="mb-6 bg-white shadow dark:bg-gray-800">
+                            <div className="px-4 py-6 mx-auto sm:px-6 lg:px-14">
+                                {header}
+                            </div>
+                        </header>
+                    )}
+                    <main className="flex-1">{children}</main>
+                </div>
             </div>
         </div>
     );
