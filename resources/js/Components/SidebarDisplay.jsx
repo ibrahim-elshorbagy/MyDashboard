@@ -1,6 +1,7 @@
 import { Link } from "@inertiajs/react";
 import React, { useState } from "react";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChartBar } from "react-icons/fa";
 
 const SidebarSection = ({ title, subtitle, links, icon: SectionIcon }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -9,7 +10,7 @@ const SidebarSection = ({ title, subtitle, links, icon: SectionIcon }) => {
         <div>
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center justify-between w-full px-6 py-3 text-gray-400 cursor-pointer dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200 focus:outline-none"
+                className="flex items-center justify-between w-full px-6 py-3 text-gray-600 cursor-pointer dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-800 dark:hover:text-gray-200 focus:outline-none"
             >
                 <span className="flex items-center">
                     {SectionIcon && <SectionIcon className="w-5 h-5" />}
@@ -33,7 +34,7 @@ const SidebarSection = ({ title, subtitle, links, icon: SectionIcon }) => {
                     {links.map((link, index) => (
                         <Link
                             key={index}
-                            className="flex items-center px-8 py-2 text-sm text-bllack dark:text-gray-400 hover:bg-blue-500 hover:text-white"
+                            className="flex items-center px-8 py-2 text-sm text-black dark:text-gray-400 hover:bg-blue-500 hover:text-white"
                             href={route(link.href)}
                         >
                             {link.icon && (
@@ -47,11 +48,18 @@ const SidebarSection = ({ title, subtitle, links, icon: SectionIcon }) => {
         </div>
     );
 };
+
 const SidebarDisplay = ({ sections = [] }) => {
     return (
         <div className="flex flex-col sm:flex-row sm:justify-around">
             <div className="w-64 h-screen bg-white dark:bg-gray-800">
-                <nav className="mt-10">
+                <div className="flex items-center justify-center py-4 text-3xl font-bold text-gray-700 align-center dark:text-gray-200">
+                    <FaChartBar className="text-3xl text-gray-800 dark:text-gray-200" />
+                    <span className="ml-2 text-3xl font-bold text-gray-800 dark:text-gray-200">
+                        DashMaster
+                    </span>
+                </div>
+                <nav>
                     {sections.map((section, index) => (
                         <SidebarSection
                             key={index}
@@ -68,4 +76,3 @@ const SidebarDisplay = ({ sections = [] }) => {
 };
 
 export default SidebarDisplay;
-

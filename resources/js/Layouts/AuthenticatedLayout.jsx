@@ -4,6 +4,7 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
+import Sidebar from "./sidebar/Sidebar";
 
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 
@@ -172,6 +173,7 @@ export default function Authenticated({ user, header, children }) {
             )}
 
             <div className="flex">
+                <Sidebar user={user} />
                 <main className="flex-1">{children}</main>
             </div>
         </div>
