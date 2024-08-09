@@ -172,31 +172,35 @@ const MySidebar = ({ user }) => {
                         </SubMenu>
                     ))}
                 </Menu>
-                <div className="flex items-center justify-center p-4 overflow-hidden">
-                    <div
-                        className={`flex items-center ${
-                            collapsed ? "" : "gap-3"
-                        }`}
-                    >
-                        <img
-                            className="w-8 h-8 rounded-full"
-                            src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
-                            alt="User avatar"
-                        />
-                        {!collapsed && (
-                            <div className="overflow-hidden">
-                                <div
-                                    className="overflow-hidden text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap text-ellipsis"
-                                >
-                                    {user.name}
-                                </div>
-                                <div className="text-xs text-gray-500 dark:text-gray-400">
-                                    {user.email}
-                                </div>
-                            </div>
-                        )}
-                    </div>
+                <div className="px-6 pb-8">
+                    <hr className="border-gray-300 dark:border-gray-900" />
                 </div>
+                <Link href={route("profile.edit")}>
+                    <div className="flex items-center pt-2 pl-6 overflow-hidden ">
+                        {/* justify-center */}
+                        <div
+                            className={`flex items-center ${
+                                collapsed ? "" : "gap-3"
+                            }`}
+                        >
+                            <img
+                                className="rounded-full w-9 h-9"
+                                src={user.profile_photo_url}
+                                alt="User avatar"
+                            />
+                            {!collapsed && (
+                                <div className="overflow-hidden">
+                                    <div className="overflow-hidden text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap text-ellipsis">
+                                        {user.name}
+                                    </div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-400">
+                                        {user.email}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </Link>
             </Sidebar>
         </div>
     );

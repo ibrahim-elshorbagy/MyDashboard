@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Http\UploadedFile;
 
 class ProfileController extends Controller
 {
@@ -40,6 +43,64 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit');
     }
 
+    public function updateProfileImage(Request $request)
+    {
+        $request->validate([
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        $user = auth()->user();
+        $newImage = $request->file('photo');
+
+        if ($newImage) {
+            // Save the new image
+            $relativePath = $this->saveImage($newImage, $user->id);
+            $imageUrl = URL::to(Storage::url($relativePath));
+
+            // Delete the old image if it exists
+            if ($user->profile_photo_url) {
+                $this->deleteOldImage($user->profile_photo_url);
+            }
+
+            // Update the user's profile photo URL
+            $user->profile_photo_url = $imageUrl;
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit');
+    }
+
+    /**
+     * Save the uploaded image to storage.
+     */
+    private function saveImage(UploadedFile $image, $userId)
+    {
+        $path = 'profile_images/' . $userId;
+        Storage::makeDirectory($path, 0755, true);
+
+        Storage::putFileAs('public/' . $path, $image, $image->getClientOriginalName());
+
+        return $path . '/' . $image->getClientOriginalName();
+    }
+
+    /**
+     * Delete the old image from storage.
+     */
+    private function deleteOldImage($imageUrl)
+    {
+        if ($imageUrl) {
+            $relativePath = str_replace('/storage', '', parse_url($imageUrl, PHP_URL_PATH));
+
+            Storage::disk('public')->delete($relativePath);
+
+            $directoryPath = dirname($relativePath);
+
+            if (count(Storage::disk('public')->files($directoryPath)) === 0) {
+                Storage::disk('public')->deleteDirectory($directoryPath);
+            }
+        }
+    }
     /**
      * Delete the user's account.
      */

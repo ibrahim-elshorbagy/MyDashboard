@@ -40,6 +40,7 @@ class HandleInertiaRequests extends Middleware
                         'name' => $user->name,
                         'email' => $user->email,
                         'roles' => $user->getRoleNames(),
+                        'profile_photo_url'=> $user->profile_photo_url
                     ] : null;
                 },
                 ],

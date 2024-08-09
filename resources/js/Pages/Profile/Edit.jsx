@@ -3,13 +3,19 @@ import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 import { Head } from "@inertiajs/react";
+import UpdateProfileImage from "./Partials/UpdateProfileImage";
 
-const Edit = ({ auth, mustVerifyEmail, status }) => {
+const Edit = ({ auth, mustVerifyEmail, status,  }) => {
     return (
         <>
             <Head title="Profile" />
             <div className="py-12">
                 <div className="mx-auto space-y-6 max-w-7xl sm:px-6 lg:px-8">
+                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                        <UpdateProfileImage
+                            className="max-w-xl"
+                        />
+                    </div>
                     <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
