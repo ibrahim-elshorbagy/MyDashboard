@@ -164,9 +164,9 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            <div className="flex pt-16">
-                <MySidebar user={user}  />
-                <div className="flex-1">
+            <div className="flex flex-1 pt-16">
+                <MySidebar user={user} />
+                <div className="flex flex-col flex-1 min-h-screen">
                     {header && (
                         <header className="mb-6 bg-white shadow dark:bg-gray-800">
                             <div className="px-4 py-6 mx-auto sm:px-6 lg:px-14">
@@ -174,7 +174,7 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                         </header>
                     )}
-                    <main className="flex-1">{children}</main>
+                    <main className="flex flex-col flex-1">{children}</main>
                 </div>
             </div>
         </div>

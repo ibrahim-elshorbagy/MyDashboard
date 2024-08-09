@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 import SideNavLink from "@/Components/SideNavLink";
 
-import { Link  } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
 const MySidebar = ({ user }) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -116,7 +116,7 @@ const MySidebar = ({ user }) => {
                 collapsed={collapsed}
                 width="270px"
                 collapsedWidth="80px"
-                className="h-screen transition-all duration-300 bg-white dark:bg-gray-800"
+                className="h-full transition-all duration-300 bg-white dark:bg-gray-800"
                 transitionDuration={300}
                 backgroundColor="white dark:bg-gray-800"
             >
