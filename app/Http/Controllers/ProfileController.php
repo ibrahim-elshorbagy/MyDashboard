@@ -45,10 +45,13 @@ class ProfileController extends Controller
 
     public function updateProfileImage(Request $request)
     {
-        $request->validate([
+        $data = $request->validate([
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
 
+        if($data['photo'] === null) {
+            return Redirect::route('profile.edit');
+        }
         $user = auth()->user();
         $newImage = $request->file('photo');
 
@@ -56,7 +59,6 @@ class ProfileController extends Controller
             // Save the new image
             $relativePath = $this->saveImage($newImage, $user->id);
             $imageUrl = URL::to(Storage::url($relativePath));
-
             // Delete the old image if it exists
             if ($user->profile_photo_url) {
                 $this->deleteOldImage($user->profile_photo_url);
