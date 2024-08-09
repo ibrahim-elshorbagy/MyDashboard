@@ -168,7 +168,7 @@ export default function Authenticated({ user, header, children }) {
                 <MySidebar user={user} />
                 <div className="flex flex-col flex-1 min-h-screen">
                     {header && (
-                        <header className="mb-6 bg-white shadow dark:bg-gray-800">
+                        <header className="mb-6 bg-white dark:bg-gray-800">
                             <div className="px-4 py-6 mx-auto sm:px-6 lg:px-14">
                                 {header}
                             </div>
@@ -180,3 +180,4 @@ export default function Authenticated({ user, header, children }) {
         </div>
     );
 }
+
