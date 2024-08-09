@@ -4,8 +4,9 @@ import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
-import Sidebar from "./sidebar/Sidebar";
+import MySidebar from "./sidebar/MySidebar";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
+import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -36,7 +37,7 @@ export default function Authenticated({ user, header, children }) {
                             <ThemeToggleButton />
 
                             <div className="relative ml-3">
-                                <Dropdown >
+                                <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
                                             <button
@@ -164,7 +165,7 @@ export default function Authenticated({ user, header, children }) {
             </nav>
 
             <div className="flex pt-16">
-                <Sidebar user={user} />
+                <MySidebar user={user}  />
                 <div className="flex-1">
                     {header && (
                         <header className="mb-6 bg-white shadow dark:bg-gray-800">
