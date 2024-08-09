@@ -172,7 +172,6 @@ const MySidebar = ({ user }) => {
                         </SubMenu>
                     ))}
                 </Menu>
-
                 <div className="flex items-center justify-center p-4 overflow-hidden">
                     <div
                         className={`flex items-center ${
@@ -180,22 +179,22 @@ const MySidebar = ({ user }) => {
                         }`}
                     >
                         <img
-                            className="w-8 rounded-full h-8z"
+                            className="w-8 h-8 rounded-full"
                             src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
                             alt="User avatar"
                         />
-                        <div>
-                            {!collapsed && (
-                                <div className="text-sm font-medium text-gray-700 dark:text-gray-200">
+                        {!collapsed && (
+                            <div className="overflow-hidden">
+                                <div
+                                    className="overflow-hidden text-sm font-medium text-gray-700 dark:text-gray-200 whitespace-nowrap text-ellipsis"
+                                >
                                     {user.name}
                                 </div>
-                            )}
-                            {!collapsed && (
                                 <div className="text-xs text-gray-500 dark:text-gray-400">
                                     {user.email}
                                 </div>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </Sidebar>
