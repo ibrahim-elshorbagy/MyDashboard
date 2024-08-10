@@ -1,19 +1,53 @@
+import { useState, useEffect } from "react";
 import ApplicationLogo from "@/Components/ApplicationLogo";
 import { Link } from "@inertiajs/react";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 import NavLink from "@/Components/NavLink";
-import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18nConfig";
+import { FaFlagUsa } from "react-icons/fa";
+import { FaFlag } from "react-icons/fa";
+import SelectInput from "@/Components/SelectInput";
 
-export default function Guest({
-    children,
-    centerContent = false,
-    box_width = "max-w-7xl",
-}) {
+const resources = {
+    en: {
+        translation: {
+            Login: "Login",
+            Register: "Register",
+        },
+    },
+    ar: {
+        translation: {
+            Login: "تسجيل الدخول",
+            Register: "التسجيل",
+        },
+    },
+};
+
+i18n.addResources("en", "translation", resources.en.translation);
+i18n.addResources("ar", "translation", resources.ar.translation);
+
+export default function Guest({ children }) {
+    const { t } = useTranslation();
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+    const [direction, setDirection] = useState("ltr");
+
+    useEffect(() => {
+        const newDirection = i18n.language === "ar" ? "rtl" : "ltr";
+        setDirection(newDirection);
+        document.documentElement.dir = newDirection;
+    }, [i18n.language]);
+
+    const changeLanguage = (e) => {
+        i18n.changeLanguage(e.target.value);
+    };
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div
+            className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900"
+            style={{ direction }}
+        >
             <nav className="bg-white border-b border-gray-300 shadow-lg dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -30,15 +64,33 @@ export default function Guest({
                                 href={route("login")}
                                 active={route().current("login")}
                             >
-                                Login
+                                {t("Login")}
                             </NavLink>
                             <NavLink
                                 href={route("register")}
                                 active={route().current("register")}
                             >
-                                Register
+                                {t("Register")}
                             </NavLink>
                             <ThemeToggleButton />
+
+                            {/* Language Selector */}
+                            <div className="relative p-5 ml-3">
+                                <SelectInput
+                                    onChange={changeLanguage}
+                                    value={i18n.language}
+                                    className="border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                                >
+                                    <option value="en">
+                                        <FaFlagUsa className="inline-block mr-2" />
+                                        English
+                                    </option>
+                                    <option value="ar">
+                                        <FaFlag className="inline-block mr-2" />
+                                        العربية
+                                    </option>
+                                </SelectInput>
+                            </div>
                         </div>
 
                         <div className="flex items-center -mr-2 sm:hidden">
@@ -95,32 +147,20 @@ export default function Guest({
                             href={route("login")}
                             className="block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-900"
                         >
-                            Login
+                            {t("Login")}
                         </Link>
                         <Link
                             href={route("register")}
                             className="block px-4 py-2 text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-900"
                         >
-                            Register
+                            {t("Register")}
                         </Link>
                         <ThemeToggleButton />
                     </div>
                 </div>
             </nav>
 
-            <div
-                className={`flex-1 ${
-                    centerContent ? "flex items-center justify-center" : ""
-                }`}
-            >
-                <div
-                    className={`w-full px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg ${
-                        centerContent ? "max-w-lg" : `${box_width} mx-auto`
-                    }`}
-                >
-                    {children}
-                </div>
-            </div>
+            {children}
         </div>
     );
 }

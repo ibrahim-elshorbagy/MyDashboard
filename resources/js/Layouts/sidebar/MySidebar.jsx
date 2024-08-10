@@ -12,24 +12,67 @@ import {
     FaUser,
 } from "react-icons/fa";
 import SideNavLink from "@/Components/SideNavLink";
-
 import { Link } from "@inertiajs/react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18nConfig";
 
-const MySidebar = ({ user }) => {
+const resources = {
+    en: {
+        translation: {
+            "Admin Dashboard": "Admin Dashboard",
+            Dashboard: "Dashboard",
+            "All Users": "All Users",
+            "E-Commerce": "E-Commerce",
+            Sales: "Sales",
+            "Product List": "Product List",
+            Marketing: "Marketing",
+            Campaigns: "Campaigns",
+            Analytics: "Analytics",
+            Support: "Support",
+            FAQ: "FAQ",
+            "Contact Us": "Contact Us",
+            DashMaster: "DashMaster",
+        },
+    },
+    ar: {
+        translation: {
+            "Admin Dashboard": "لوحة تحكم المسؤول",
+            Dashboard: "لوحة التحكم",
+            "All Users": "جميع المستخدمين",
+            "E-Commerce": "التجارة الإلكترونية",
+            Sales: "المبيعات",
+            "Product List": "قائمة المنتجات",
+            Marketing: "التسويق",
+            Campaigns: "الحملات",
+            Analytics: "تحليلات",
+            Support: "الدعم",
+            FAQ: "الأسئلة الشائعة",
+            "Contact Us": "اتصل بنا",
+            DashMaster: "DashMaster",
+        },
+    },
+};
+
+// Add the resources to i18n
+i18n.addResources("en", "translation", resources.en.translation);
+i18n.addResources("ar", "translation", resources.ar.translation);
+
+const MySidebar = ({ user, direction }) => {
+    const { t } = useTranslation(); // Translation hook
     const [collapsed, setCollapsed] = useState(false);
 
     const sections = [
         {
-            title: "Admin Dashboard",
+            title: t("Admin Dashboard"),
             links: [
                 {
-                    text: "dashboard",
+                    text: t("Dashboard"),
                     href: "dashboard",
                     icon: <MdDashboard />,
                     roles: ["admin"],
                 },
                 {
-                    text: "All Users",
+                    text: t("All Users"),
                     href: "/",
                     icon: <FaUser />,
                     roles: ["admin"],
@@ -39,16 +82,16 @@ const MySidebar = ({ user }) => {
             roles: ["admin"],
         },
         {
-            title: "E-Commerce",
+            title: t("E-Commerce"),
             links: [
                 {
-                    text: "Sales",
+                    text: t("Sales"),
                     href: "/",
                     icon: <FaShoppingCart />,
                     roles: ["admin", "user"],
                 },
                 {
-                    text: "Product List",
+                    text: t("Product List"),
                     href: "/",
                     icon: <FaThLarge />,
                     roles: ["admin", "user"],
@@ -58,16 +101,16 @@ const MySidebar = ({ user }) => {
             roles: ["admin", "user"],
         },
         {
-            title: "Marketing",
+            title: t("Marketing"),
             links: [
                 {
-                    text: "Campaigns",
+                    text: t("Campaigns"),
                     href: "/",
                     icon: <FaRocket />,
                     roles: ["admin", "user"],
                 },
                 {
-                    text: "Analytics",
+                    text: t("Analytics"),
                     href: "/",
                     icon: <FaChartBar />,
                     roles: ["admin", "user"],
@@ -77,16 +120,16 @@ const MySidebar = ({ user }) => {
             roles: ["admin", "user"],
         },
         {
-            title: "Support",
+            title: t("Support"),
             links: [
                 {
-                    text: "FAQ",
+                    text: t("FAQ"),
                     href: "/",
                     icon: <FaInfoCircle />,
                     roles: ["admin", "user"],
                 },
                 {
-                    text: "Contact Us",
+                    text: t("Contact Us"),
                     href: "/",
                     icon: <FaBell />,
                     roles: ["admin", "user"],
@@ -96,7 +139,8 @@ const MySidebar = ({ user }) => {
             roles: ["admin", "user"],
         },
     ];
-
+    console.log(direction === "ltr");
+    console.log(direction);
     const filteredSections = sections
         .map((section) => ({
             ...section,
@@ -113,6 +157,7 @@ const MySidebar = ({ user }) => {
     return (
         <div>
             <Sidebar
+                rtl={direction === "rtl"}
                 collapsed={collapsed}
                 width="270px"
                 collapsedWidth="80px"
@@ -127,7 +172,7 @@ const MySidebar = ({ user }) => {
                         }`}
                     >
                         <FaChartBar className="text-3xl text-blue-500" />
-                        <span>DashMaster</span>
+                        <span>{t("DashMaster")}</span>
                     </h1>
                     <button
                         onClick={() => setCollapsed(!collapsed)}
@@ -176,8 +221,7 @@ const MySidebar = ({ user }) => {
                     <hr className="border-gray-300 dark:border-gray-900" />
                 </div>
                 <Link href={route("profile.edit")}>
-                    <div className="flex items-center pt-2 pl-6 overflow-hidden ">
-                        {/* justify-center */}
+                    <div className="flex items-center p-6 pt-2 mx-auto overflow-hidden ">
                         <div
                             className={`flex items-center ${
                                 collapsed ? "" : "gap-3"

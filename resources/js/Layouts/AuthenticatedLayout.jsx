@@ -1,23 +1,75 @@
-import { useState } from 'react';
-import ApplicationLogo from '@/Components/ApplicationLogo';
-import Dropdown from '@/Components/Dropdown';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
+import { useState, useEffect } from "react";
+import ApplicationLogo from "@/Components/ApplicationLogo";
+import Dropdown from "@/Components/Dropdown";
+import SelectInput from "@/Components/SelectInput";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Link } from "@inertiajs/react";
 import MySidebar from "./sidebar/MySidebar";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18nConfig";
+import { FaFlagUsa } from "react-icons/fa";
+import { FaFlag } from "react-icons/fa";
+
+const resources = {
+    en: {
+        translation: {
+            Dashboard: "Dashboard",
+            Profile: "Profile",
+            "Log Out": "Log Out",
+            "Your email address is unverified.":
+                "Your email address is unverified.",
+            "Click here to re-send the verification email.":
+                "Click here to re-send the verification email.",
+            "A new verification link has been sent to your email address.":
+                "A new verification link has been sent to your email address.",
+        },
+    },
+    ar: {
+        translation: {
+            Dashboard: "لوحة القيادة",
+            Profile: "الملف الشخصي",
+            "Log Out": "تسجيل خروج",
+            "Your email address is unverified.":
+                "لم يتم التحقق من عنوان بريدك الإلكتروني.",
+            "Click here to re-send the verification email.":
+                "انقر هنا لإعادة إرسال بريد التحقق.",
+            "A new verification link has been sent to your email address.":
+                "تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.",
+        },
+    },
+};
+
+i18n.addResources("en", "translation", resources.en.translation);
+i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function Authenticated({ user, header, children }) {
-    const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+    const { t } = useTranslation();
+    const [showingNavigationDropdown, setShowingNavigationDropdown] =
+        useState(false);
+    const [direction, setDirection] = useState("ltr");
 
+    useEffect(() => {
+        const newDirection = i18n.language === "ar" ? "rtl" : "ltr";
+        setDirection(newDirection);
+        document.documentElement.dir = newDirection;
+    }, [i18n.language]);
+
+    const changeLanguage = (e) => {
+        i18n.changeLanguage(e.target.value);
+    };
 
     return (
-        <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div
+            className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 ${
+                direction === "rtl" ? "rtl" : "ltr"
+            }`}
+        >
             <nav className="fixed top-0 left-0 z-10 w-full bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                 <div className="mx-auto max-w-7xl">
                     <div className="flex justify-between h-16 px-6">
-                        <div className="flex">
+                        <div className="flex gap-2">
                             <div className="flex items-center shrink-0">
                                 <Link href="dashboard">
                                     <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
@@ -28,13 +80,30 @@ export default function Authenticated({ user, header, children }) {
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
                                 >
-                                    Dashboard
+                                    {t("Dashboard")}
                                 </NavLink>
                             </div>
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ml-6">
                             <ThemeToggleButton />
+
+                            <div className="relative p-5 ml-3">
+                                <SelectInput
+                                    onChange={changeLanguage}
+                                    value={i18n.language}
+                                    className="border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                                >
+                                    <option value="en">
+                                        <FaFlagUsa className="inline-block mr-2" />
+                                        English
+                                    </option>
+                                    <option value="ar">
+                                        <FaFlag className="inline-block mr-2" />
+                                        العربية
+                                    </option>
+                                </SelectInput>
+                            </div>
 
                             <div className="relative ml-3">
                                 <Dropdown>
@@ -66,14 +135,14 @@ export default function Authenticated({ user, header, children }) {
                                         <Dropdown.Link
                                             href={route("profile.edit")}
                                         >
-                                            Profile
+                                            {t("Profile")}
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
                                             as="button"
                                         >
-                                            Log Out
+                                            {t("Log Out")}
                                         </Dropdown.Link>
                                     </Dropdown.Content>
                                 </Dropdown>
@@ -134,7 +203,7 @@ export default function Authenticated({ user, header, children }) {
                             href={route("dashboard")}
                             active={route().current("dashboard")}
                         >
-                            Dashboard
+                            {t("Dashboard")}
                         </ResponsiveNavLink>
                     </div>
 
@@ -150,22 +219,45 @@ export default function Authenticated({ user, header, children }) {
 
                         <div className="mt-3 space-y-1">
                             <ResponsiveNavLink href={route("profile.edit")}>
-                                Profile
+                                {t("Profile")}
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}
                                 as="button"
                             >
-                                Log Out
+                                {t("Log Out")}
                             </ResponsiveNavLink>
+                        </div>
+
+                        <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                            <div className="px-4">
+                                <div className="grid justify-between grid-cols-3">
+                                    <ThemeToggleButton />
+
+                                    <SelectInput
+                                        onChange={changeLanguage}
+                                        value={i18n.language}
+                                        className="col-span-2 border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                                    >
+                                        <option value="en">
+                                            <FaFlagUsa className="inline-block mr-2" />
+                                            English
+                                        </option>
+                                        <option value="ar">
+                                            <FaFlag className="inline-block mr-2" />
+                                            العربية
+                                        </option>
+                                    </SelectInput>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </nav>
 
             <div className="flex flex-1 pt-16">
-                <MySidebar user={user} />
+                <MySidebar user={user} direction={direction} />
                 <div className="flex flex-col flex-1 min-h-screen">
                     {header && (
                         <header className="mb-6 bg-white dark:bg-gray-800">
@@ -180,4 +272,3 @@ export default function Authenticated({ user, header, children }) {
         </div>
     );
 }
-

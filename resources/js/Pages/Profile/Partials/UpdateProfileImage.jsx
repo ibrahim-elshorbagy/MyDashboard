@@ -3,8 +3,34 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { useForm, usePage } from "@inertiajs/react";
 import { useState, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import i18n from "@/i18nConfig";
+
+
+const resources = {
+    en: {
+        translation: {
+            "Update Profile Image": "Update Profile Image",
+            "Select A New Photo": "Select A New Photo",
+            "Remove Photo": "Remove Photo",
+            Save: "Save",
+        },
+    },
+    ar: {
+        translation: {
+            "Update Profile Image": "تحديث صورة الملف الشخصي",
+            "Select A New Photo": "اختر صورة جديدة",
+            "Remove Photo": "إزالة الصورة",
+            Save: "حفظ",
+        },
+    },
+};
+
+i18n.addResources("en", "translation", resources.en.translation);
+i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function UpdateProfileImage({ className = "" }) {
+    const { t } = useTranslation();
     const user = usePage().props.auth.user;
     const [photoPreview, setPhotoPreview] = useState(user.profile_photo_url);
     const photoInput = useRef(null);
@@ -29,6 +55,11 @@ export default function UpdateProfileImage({ className = "" }) {
         photoInput.current.click();
     };
 
+    const removePhoto = () => {
+        setPhotoPreview(null);
+        setData("photo", null);
+    };
+
     const submit = (e) => {
         e.preventDefault();
         post(route("profile.update-photo"));
@@ -38,7 +69,7 @@ export default function UpdateProfileImage({ className = "" }) {
         <section className={className}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Update Profile Image
+                    {t("Update Profile Image")}
                 </h2>
             </header>
 
@@ -65,12 +96,12 @@ export default function UpdateProfileImage({ className = "" }) {
 
                 <div className="flex items-center gap-4 mt-2">
                     <SecondaryButton type="button" onClick={selectNewPhoto}>
-                        Select A New Photo
+                        {t("Select A New Photo")}
                     </SecondaryButton>
 
                     {user.profile_photo_path && (
                         <SecondaryButton type="button" onClick={removePhoto}>
-                            Remove Photo
+                            {t("Remove Photo")}
                         </SecondaryButton>
                     )}
                 </div>
@@ -78,7 +109,9 @@ export default function UpdateProfileImage({ className = "" }) {
                 <InputError message={errors.photo} className="mt-2" />
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing}>
+                        {t("Save")}
+                    </PrimaryButton>
                 </div>
             </form>
         </section>
