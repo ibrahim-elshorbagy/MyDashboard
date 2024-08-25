@@ -139,8 +139,6 @@ const MySidebar = ({ user, direction }) => {
             roles: ["admin", "user"],
         },
     ];
-    console.log(direction === "ltr");
-    console.log(direction);
     const filteredSections = sections
         .map((section) => ({
             ...section,
@@ -200,19 +198,22 @@ const MySidebar = ({ user, direction }) => {
                             label={section.title}
                             className="py-2 my-2 text-gray-800 dark:text-white dark:hover:text-white hover:text-black"
                         >
+                            {index}
                             {section.links.map((link, idx) => (
+                                <SideNavLink
+                                        href={route(link.href)}
+                                        active={route().current(link.href)}
+                                    >
                                 <MenuItem
                                     key={idx}
                                     icon={link.icon}
                                     className="py-2 my-1 text-gray-600 dark:text-gray-400 dark:hover:text-white hover:text-black"
                                 >
-                                    <SideNavLink
-                                        href={route(link.href)}
-                                        active={route().current(link.href)}
-                                    >
+
                                         {link.text}
-                                    </SideNavLink>
                                 </MenuItem>
+                                    </SideNavLink>
+
                             ))}
                         </SubMenu>
                     ))}

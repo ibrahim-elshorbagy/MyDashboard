@@ -11,7 +11,7 @@ Route::get('/', function () {
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
     ]);
-})->name('/');
+})->name('/')->middleware('guest');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
