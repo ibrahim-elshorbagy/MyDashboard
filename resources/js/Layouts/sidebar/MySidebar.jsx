@@ -193,25 +193,20 @@ const MySidebar = ({ user, direction }) => {
                 >
                     {filteredSections.map((section, index) => (
                         <SubMenu
-                            key={index}
+                             key={`${index}-${section.title}`}
                             icon={section.icon}
                             label={section.title}
                             className="py-2 my-2 text-gray-800 dark:text-white dark:hover:text-white hover:text-black"
                         >
-                            {index}
                             {section.links.map((link, idx) => (
                                 <SideNavLink
+                                        key={`${idx}-${link.href}`}
                                         href={route(link.href)}
                                         active={route().current(link.href)}
+                                        className="flex items-center justify-between px-4 py-2 text-gray-400 transition-colors duration-300 hover:text-white"
                                     >
-                                <MenuItem
-                                    key={idx}
-                                    icon={link.icon}
-                                    className="py-2 my-1 text-gray-600 dark:text-gray-400 dark:hover:text-white hover:text-black"
-                                >
+                                        <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base">{link.icon}{link.text}</div>
 
-                                        {link.text}
-                                </MenuItem>
                                     </SideNavLink>
 
                             ))}
