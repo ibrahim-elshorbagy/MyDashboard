@@ -61,7 +61,7 @@ const Dashboard = ({ auth }) => {
     return (
         <>
             <Head title="Dashboard" />
-            <div>
+            {/* <div>
                 <div className="px-1 mx-auto sm:px-6 lg:px-6">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <div className="gap-4 p-6 text-gray-900 dark:text-gray-100">
@@ -165,7 +165,7 @@ const Dashboard = ({ auth }) => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </>
     );
 };

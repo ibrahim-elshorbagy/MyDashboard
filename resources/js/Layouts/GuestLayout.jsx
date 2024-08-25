@@ -82,11 +82,9 @@ export default function Guest({ children }) {
                                     className="border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                                 >
                                     <option value="en">
-                                        <FaFlagUsa className="inline-block mr-2" />
                                         English
                                     </option>
                                     <option value="ar">
-                                        <FaFlag className="inline-block mr-2" />
                                         العربية
                                     </option>
                                 </SelectInput>

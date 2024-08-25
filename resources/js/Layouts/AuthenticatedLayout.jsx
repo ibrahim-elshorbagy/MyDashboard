@@ -95,11 +95,9 @@ export default function Authenticated({ user, header, children }) {
                                     className="border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                                 >
                                     <option value="en">
-                                        <FaFlagUsa className="inline-block mr-2" />
                                         English
                                     </option>
                                     <option value="ar">
-                                        <FaFlag className="inline-block mr-2" />
                                         العربية
                                     </option>
                                 </SelectInput>
@@ -121,11 +119,11 @@ export default function Authenticated({ user, header, children }) {
                                                     viewBox="0 0 20 20"
                                                     fill="currentColor"
                                                 >
-                                                    <path
+                                                   <path
                                                         fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 011.414 1.414l-4 4a1 1 01-1.414 0l-4-4a1 1 010-1.414z"
+                                                        d="M5.293 7.293a1 1 0 0 1 1.414 0L10 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414z"
                                                         clipRule="evenodd"
-                                                    />
+                                                        />
                                                 </svg>
                                             </button>
                                         </span>
@@ -241,11 +239,9 @@ export default function Authenticated({ user, header, children }) {
                                         className="col-span-2 border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                                     >
                                         <option value="en">
-                                            <FaFlagUsa className="inline-block mr-2" />
                                             English
                                         </option>
                                         <option value="ar">
-                                            <FaFlag className="inline-block mr-2" />
                                             العربية
                                         </option>
                                     </SelectInput>
