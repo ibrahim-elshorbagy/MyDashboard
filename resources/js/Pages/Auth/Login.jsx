@@ -107,7 +107,7 @@ export default function Login({ status, canResetPassword }) {
                         </div>
 
                         <div className="block mt-4">
-                            <label className="flex items-center">
+                            <label className="flex items-center gap-3">
                                 <Checkbox
                                     name="remember"
                                     checked={data.remember}

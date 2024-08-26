@@ -28,7 +28,5 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('admin');
 
 
-
-
     }
 }

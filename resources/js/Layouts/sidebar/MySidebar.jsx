@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Sidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
+import { Sidebar, Menu, SubMenu } from "react-pro-sidebar";
 import { MdDashboard, MdChevronLeft, MdChevronRight } from "react-icons/md";
 import {
     FaChartBar,
-    FaCog,
     FaBell,
     FaThLarge,
     FaShoppingCart,
@@ -69,17 +68,16 @@ const MySidebar = ({ user, direction }) => {
                     text: t("Dashboard"),
                     href: "dashboard",
                     icon: <MdDashboard />,
-                    roles: ["admin"],
+                    permissions: ["view-dashboard"],
                 },
                 {
                     text: t("All Users"),
                     href: "/",
                     icon: <FaUser />,
-                    roles: ["admin"],
+                    permissions: ["manage-users"],
                 },
             ],
             icon: <MdDashboard />,
-            roles: ["admin"],
         },
         {
             title: t("E-Commerce"),
@@ -88,17 +86,16 @@ const MySidebar = ({ user, direction }) => {
                     text: t("Sales"),
                     href: "/",
                     icon: <FaShoppingCart />,
-                    roles: ["admin", "user"],
+                    permissions: ["view-sales"],
                 },
                 {
                     text: t("Product List"),
                     href: "/",
                     icon: <FaThLarge />,
-                    roles: ["admin", "user"],
+                    permissions: ["view-products"],
                 },
             ],
             icon: <FaShoppingCart />,
-            roles: ["admin", "user"],
         },
         {
             title: t("Marketing"),
@@ -107,17 +104,16 @@ const MySidebar = ({ user, direction }) => {
                     text: t("Campaigns"),
                     href: "/",
                     icon: <FaRocket />,
-                    roles: ["admin", "user"],
+                    permissions: ["view-campaigns"],
                 },
                 {
                     text: t("Analytics"),
                     href: "/",
                     icon: <FaChartBar />,
-                    roles: ["admin", "user"],
+                    permissions: ["view-analytics"],
                 },
             ],
             icon: <FaRocket />,
-            roles: ["admin", "user"],
         },
         {
             title: t("Support"),
@@ -126,32 +122,30 @@ const MySidebar = ({ user, direction }) => {
                     text: t("FAQ"),
                     href: "/",
                     icon: <FaInfoCircle />,
-                    roles: ["admin", "user"],
+                    permissions: ["view-faq"],
                 },
                 {
                     text: t("Contact Us"),
                     href: "/",
                     icon: <FaBell />,
-                    roles: ["admin", "user"],
+                    permissions: ["contact-support"],
                 },
             ],
             icon: <FaInfoCircle />,
-            roles: ["admin", "user"],
         },
     ];
+
+    // Filter sections based on user permissions
     const filteredSections = sections
         .map((section) => ({
             ...section,
             links: section.links.filter((link) =>
-                link.roles.some((role) => user.roles.includes(role))
+                link.permissions.some((permission) =>
+                    user.permissions.includes(permission)
+                )
             ),
         }))
-        .filter(
-            (section) =>
-                section.roles.some((role) => user.roles.includes(role)) &&
-                section.links.length > 0
-        );
-
+        .filter((section) => section.links.length > 0);
     return (
         <div>
             <Sidebar
@@ -193,22 +187,20 @@ const MySidebar = ({ user, direction }) => {
                 >
                     {filteredSections.map((section, index) => (
                         <SubMenu
-                             key={`${index}-${section.title}`}
+                            key={`${index}-${section.title}`}
                             icon={section.icon}
                             label={section.title}
                             className="py-2 my-2 text-gray-800 dark:text-white dark:hover:text-white hover:text-black"
                         >
                             {section.links.map((link, idx) => (
                                 <SideNavLink
-                                        key={`${idx}-${link.href}`}
-                                        href={route(link.href)}
-                                        active={route().current(link.href)}
-                                        className="flex items-center justify-between px-4 py-2 text-gray-400 transition-colors duration-300 hover:text-white"
-                                    >
-                                        <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base">{link.icon}{link.text}</div>
-
-                                    </SideNavLink>
-
+                                    key={`${idx}-${link.href}`}
+                                    href={route(link.href)}
+                                    active={route().current(link.href)}
+                                    className="flex items-center justify-between px-4 py-2 text-gray-400 transition-colors duration-300 hover:text-white"
+                                >
+                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base">{link.icon}{link.text}</div>
+                                </SideNavLink>
                             ))}
                         </SubMenu>
                     ))}
