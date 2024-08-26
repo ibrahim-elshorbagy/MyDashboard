@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\User\UserCRUD\UpdateUserRequest;
 use App\Http\Resources\Admin\User\UserCRUDResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Spatie\Permission\Models\Role;
 
 class UserCRUDController extends Controller
@@ -57,6 +58,7 @@ class UserCRUDController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
+
         $data = $request->validated();
         $data['email_verified_at'] = time();
         $data['password'] = bcrypt($data['password']);
@@ -67,8 +69,15 @@ class UserCRUDController extends Controller
         $user->assignRole($role);
         }
 
+        $locale = session('app_locale', 'en');  // Default to 'en' if not set
+
+        // Set the success message based on the session-stored locale
+        $message = $locale === 'ar'
+            ? "تم إنشاء المستخدم \"{$user->name}\" بنجاح"
+            : "User \"{$user->name}\" was created successfully";
+
         return to_route('user.index')
-            ->with('success', 'User was created');
+            ->with('success', $message);  // Return the success message
 
     }
 
@@ -99,6 +108,7 @@ class UserCRUDController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+
         $data = $request->validated();
         $password = $data['password'] ?? null;
         if ($password) {
@@ -112,9 +122,18 @@ class UserCRUDController extends Controller
         }
         $user->update($data);
 
-        return to_route('user.index')
-            ->with('success', "User \"$user->name\" was updated");
 
+        // Get the locale from the session
+        $locale = session('app_locale', 'en');  // Default to 'en' if no session locale is set
+
+        // Set the success message based on the session-stored locale
+        $message = $locale === 'ar'
+            ? "تم تحديث المستخدم \"{$user->name}\" بنجاح"
+            : "User \"{$user->name}\" was updated successfully";
+
+        // Return the success message and redirect
+        return to_route('user.index')
+            ->with('success', $message);
     }
 
     /**
@@ -124,8 +143,17 @@ class UserCRUDController extends Controller
     {
         $name = $user->name;
         $user->delete();
-        return to_route('user.index')
-            ->with('success', "User \"$name\" was deleted");
 
+        // Get the locale from the session
+        $locale = session('app_locale', 'en');  // Default to 'en' if not set
+
+        // Set the success message based on the session-stored locale
+        $message = $locale === 'ar'
+            ? "تم حذف المستخدم \"{$name}\" بنجاح"
+            : "User \"{$name}\" was deleted successfully";
+
+        return to_route('user.index')
+            ->with('success', $message);  // Return the success message
     }
+
 }

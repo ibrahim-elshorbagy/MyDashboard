@@ -5,18 +5,20 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { useTranslation } from "react-i18next"; // Import the useTranslation hook
 
-export default function Create({ auth, user,roles }) {
+export default function Create({ auth, user, roles }) {
+  const { t } = useTranslation(); // Use the translation hook for translations
+
   const { data, setData, post, errors, reset } = useForm({
     name: user.name || "",
     email: user.email || "",
-    role:user.roles[0]||"",
+    role: user.roles[0] || "",
     _method: "PUT",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-
     post(route("user.update", user.id));
   };
 
@@ -26,12 +28,12 @@ export default function Create({ auth, user,roles }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-            Edit user "{user.name}"
+            {t("Edit user")} "{user.name}"
           </h2>
         </div>
       }
     >
-        <Head title="Users" />
+      <Head title={t("Users")} />
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -39,9 +41,10 @@ export default function Create({ auth, user,roles }) {
             <form
               onSubmit={onSubmit}
               className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg"
-            >
+                      >
+            <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
               <div className="mt-4">
-                <InputLabel htmlFor="user_name" value="User Name" />
+                <InputLabel htmlFor="user_name" value={t("User Name")} />
 
                 <TextInput
                   id="user_name"
@@ -56,7 +59,7 @@ export default function Create({ auth, user,roles }) {
                 <InputError message={errors.name} className="mt-2" />
               </div>
               <div className="mt-4">
-                <InputLabel htmlFor="user_email" value="User Email" />
+                <InputLabel htmlFor="user_email" value={t("User Email")} />
 
                 <TextInput
                   id="user_email"
@@ -71,7 +74,7 @@ export default function Create({ auth, user,roles }) {
               </div>
 
               <div className="mt-4">
-                <InputLabel htmlFor="user_password" value="Password" />
+                <InputLabel htmlFor="user_password" value={t("Password")} />
 
                 <TextInput
                   id="user_password"
@@ -83,52 +86,42 @@ export default function Create({ auth, user,roles }) {
                 />
 
                 <InputError message={errors.password} className="mt-2" />
-                </div>
+              </div>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="role"
-                        value="Role"
-                    />
+              <div className="mt-4">
+                <InputLabel htmlFor="role" value={t("Role")} />
 
-                    <SelectInput
-                        name="status"
-                        id="role"
-                        className="block w-full mt-1"
-                        value={data.role}
-                        onChange={(e) =>
-                            setData("role", e.target.value)
-                        }
-                    >
-                        <option value="">Select Role</option>
-                            {roles.map((role) => (
-                                        <option
-                                            value={role.id}
-                                            key={role.id}
-                                        >
-                                            {role.name}
-                                        </option>
-                            ))}
-                    </SelectInput>
+                <SelectInput
+                  name="status"
+                  id="role"
+                  className="block w-full mt-1"
+                  value={data.role}
+                  onChange={(e) => setData("role", e.target.value)}
+                >
+                  <option value="">{t("Select Role")}</option>
+                  {roles.map((role) => (
+                    <option value={role.id} key={role.id}>
+                      {role.name}
+                    </option>
+                  ))}
+                </SelectInput>
 
-                    <InputError
-                        message={errors.role}
-                        className="mt-2"
-                    />
-                </div>
+                <InputError message={errors.role} className="mt-2" />
+              </div>
 
-
-              <div className="mt-4 text-right">
+              <div className="mt-4 text-right flex gap-2">
                 <Link
                   href={route("user.index")}
                   className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200"
                 >
-                  Cancel
+                  {t("Cancel")}
                 </Link>
                 <button className="px-3 py-1 text-white transition-all rounded shadow bg-emerald-500 hover:bg-emerald-600">
-                  Submit
+                  {t("Submit")}
                 </button>
-              </div>
+                              </div>
+                          </div>
+
             </form>
           </div>
         </div>

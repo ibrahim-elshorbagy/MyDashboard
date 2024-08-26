@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import i18n from "@/i18nConfig";
 import { FaFlagUsa } from "react-icons/fa";
 import { FaFlag } from "react-icons/fa";
+import { router } from '@inertiajs/react'
 
 const resources = {
     en: {
@@ -44,7 +45,10 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
+
 export default function Authenticated({ user, header, children }) {
+
+
     const { t } = useTranslation();
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -56,9 +60,19 @@ export default function Authenticated({ user, header, children }) {
         document.documentElement.dir = newDirection;
     }, [i18n.language]);
 
-    const changeLanguage = (e) => {
-        i18n.changeLanguage(e.target.value);
-    };
+const changeLanguage = (e) => {
+    const selectedLanguage = e.target.value;
+
+    // Change the language on the frontend
+    i18n.changeLanguage(selectedLanguage);
+
+    // Make a POST request manually using the Inertia router
+    router.post(route('language.change'), { language: selectedLanguage }, {
+        headers: {
+            'X-Custom-Language-Header': selectedLanguage,  // Optional custom headers
+        },
+    });
+};
 
     return (
         <div

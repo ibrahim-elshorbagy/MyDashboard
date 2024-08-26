@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\User\UserCRUDController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::post('/change-language', [LanguageController::class, 'changeLanguage'])->name('language.change');
 
 
 route::resource('admin/user', UserCRUDController::class);
