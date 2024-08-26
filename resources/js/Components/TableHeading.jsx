@@ -9,8 +9,8 @@ export default function TableHeading({
     children,
 }) {
     return (
-        <th onClick={(e) => sortChanged(name)}>
-            <div className="flex items-center justify-between gap-1 px-3 py-3 cursor-pointer">
+        <th onClick={() => sortChanged(name)} className="cursor-pointer">
+            <div className="flex items-center justify-between gap-1 px-3 py-3">
                 {children}
                 {sortable && (
                     <div>
@@ -18,17 +18,16 @@ export default function TableHeading({
                             className={
                                 "w-4 " +
                                 (sort_field === name && sort_direction === "asc"
-                                    ? "text-white"
-                                    : "")
+                                    ? "text-black dark:text-white"  // Light: black, Dark: white
+                                    : "text-gray-400 dark:text-gray-500") // Default color in light and dark modes
                             }
                         />
                         <ChevronDownIcon
                             className={
-                                "w-4 -mt-2  " +
-                                (sort_field === name &&
-                                sort_direction === "desc"
-                                    ? "text-white"
-                                    : "")
+                                "w-4 -mt-2 " +
+                                (sort_field === name && sort_direction === "desc"
+                                    ? "text-black dark:text-white"  // Light: black, Dark: white
+                                    : "text-gray-400 dark:text-gray-500")  // Default color in light and dark modes
                             }
                         />
                     </div>

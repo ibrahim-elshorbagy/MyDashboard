@@ -72,7 +72,7 @@ const MySidebar = ({ user, direction }) => {
                 },
                 {
                     text: t("All Users"),
-                    href: "/",
+                    href: "user.index",
                     icon: <FaUser />,
                     permissions: ["manage-users"],
                 },
